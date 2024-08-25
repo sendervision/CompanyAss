@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "target": "ES2018",
+    "paths": {
+      "@/*": [
+        "*"
+      ]
+    },
+    "outDir": "./dist"
+  },
+  "extends": "expo/tsconfig.base"
+}
