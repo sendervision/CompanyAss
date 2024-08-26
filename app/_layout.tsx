@@ -10,11 +10,13 @@ import * as SecureStore from 'expo-secure-store'
 import React from 'react'
 import { Platform, useColorScheme } from 'react-native'
 import { PaperProvider } from 'react-native-paper'
+import { SQLiteProvider } from 'expo-sqlite'
 
 import { StackHeader } from '@/components'
 import Locales from '@/locales'
 import { Themes } from '@/styles'
 import { Setting } from '@/types'
+import { DatabaseName } from '@/utils'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -92,29 +94,26 @@ const RootLayoutNav = () => {
   }, [])
 
   return (
-    <PaperProvider
-      theme={
-        Themes[
+    <SQLiteProvider databaseName={DatabaseName}>
+      <PaperProvider
+        theme={
+          Themes[
           settings.theme === 'auto' ? (colorScheme ?? 'dark') : settings.theme
-        ][settings.color]
-      }
-    >
-      <Stack
-        screenOptions={{
-          animation: 'ios',
-          header: (props) => (
-            <StackHeader navProps={props} children={undefined} />
-          ),
-        }}
+          ][settings.color]
+        }
       >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="drawer" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="modal"
-          options={{ title: Locales.t('titleModal'), presentation: 'modal' }}
-        />
-      </Stack>
-    </PaperProvider>
+        <Stack
+          screenOptions={{
+            animation: 'ios',
+            header: (props: any) => (
+              <StackHeader navProps={props} children={undefined} />
+            ),
+          }}
+        >
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </PaperProvider>
+    </SQLiteProvider>
   )
 }
 

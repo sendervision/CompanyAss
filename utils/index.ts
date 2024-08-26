@@ -2,6 +2,9 @@
  * Utilities
  */
 
-import Languages from '@/utils/languages'
+import Languages from "@/utils/languages";
 
-export { Languages }
+const DatabaseName = "cotisations.db";
+const TableName = "cotisations"
+
+export { Languages, DatabaseName, TableName };

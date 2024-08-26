@@ -31,22 +31,6 @@ const TabLayout = () => (
       name="settings"
       options={{
         title: Locales.t('titleSettings'),
-        headerRight: () => (
-          <>
-            <Tooltip title={Locales.t('stackNav')}>
-              <Appbar.Action
-                icon="card-multiple-outline"
-                onPress={() => router.push('/modal')}
-              />
-            </Tooltip>
-            <Tooltip title={Locales.t('drawerNav')}>
-              <Appbar.Action
-                icon="gesture-swipe"
-                onPress={() => router.push('/drawer/')}
-              />
-            </Tooltip>
-          </>
-        ),
         tabBarIcon: (props) => (
           <MaterialCommunityIcons
             {...props}
