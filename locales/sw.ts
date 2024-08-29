@@ -3,6 +3,7 @@
  */
 
 const Swahili = {
+  appName: "CompanyAss",
   stackNav: 'Navigation Stack',
   drawerNav: 'Drawer Navigation',
   appearance: 'Mwonekano',

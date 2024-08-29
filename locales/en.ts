@@ -3,6 +3,7 @@
  */
 
 const English = {
+  appName: "CompanyAss",
   stackNav: 'Stack Navigation',
   drawerNav: 'Drawer Navigation',
   appearance: 'Appearance',

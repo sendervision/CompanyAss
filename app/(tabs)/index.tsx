@@ -11,6 +11,7 @@ import { ContriNotFound, FabButtonPlus, DialogDeleteCotisation } from "@/compone
 import { CardCotisation } from '@/components/CardCotisation'
 import { Cotisation } from '@/types/Cotisation'
 
+
 function TabsHome() {
   const db = useSQLiteContext()
   const [cotisations, setCotisations] = useState<Cotisation[]>([])
@@ -78,7 +79,8 @@ function TabsHome() {
         onConfirm={deleteCotisation}
       />
       <FabButtonPlus
-        onPress={() => router.navigate("/cotisations/add_contri")}
+        // onPress={() => router.navigate("/cotisations/add_contri")}
+        onPress={() => router.navigate("/auth")}
       />
     </Surface>
   )

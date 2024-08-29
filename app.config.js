@@ -1,5 +1,8 @@
-{
-  "expo": {
+
+module.exports = {
+  URL: process?.env?.SUPABASE_URL,
+  KEY: process?.env?.SUPABASE_ANON_KEY,
+  expo: {
     "name": "CompanyAss",
     "slug": "CompanyAss",
     "version": "1.0.0",
@@ -19,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.enoc9955.CompanyAss"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +35,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f3518d5f-78e5-4eff-9226-275a785feff8"
+      }
     }
   }
 }

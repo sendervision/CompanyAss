@@ -3,6 +3,7 @@
  */
 
 const French = {
+  appName: "CompanyAss",
   stackNav: 'Navigation empiler',
   drawerNav: 'Navigation tiroir',
   appearance: 'Apparence',

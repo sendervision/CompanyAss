@@ -5,12 +5,13 @@ import {
 } from '@expo-google-fonts/jetbrains-mono'
 import { NotoSans_400Regular } from '@expo-google-fonts/noto-sans'
 import * as Localization from 'expo-localization'
-import { SplashScreen, Stack } from 'expo-router'
+import { SplashScreen, Stack, Slot } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 import React from 'react'
 import { Platform, useColorScheme } from 'react-native'
 import { PaperProvider } from 'react-native-paper'
 import { SQLiteProvider } from 'expo-sqlite'
+import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo"
 
 import { StackHeader } from '@/components'
 import Locales from '@/locales'
@@ -30,6 +31,40 @@ export const unstable_settings = {
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
+
+const tokenCache = {
+  async getToken(key: string) {
+    try {
+      const item = await SecureStore.getItemAsync(key)
+      if (item) {
+        console.log(`${key} was used 🔐 \n`)
+      } else {
+        console.log('No values stored under key: ' + key)
+      }
+      return item
+    } catch (error) {
+      console.error('SecureStore get item error: ', error)
+      await SecureStore.deleteItemAsync(key)
+      return null
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value)
+    } catch (err) {
+      return
+    }
+  },
+}
+
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!
+
+if (!publishableKey) {
+  throw new Error(
+    'Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env',
+  )
+}
 
 const RootLayout = () => {
   const [loaded, error] = useFonts({
@@ -93,27 +128,31 @@ const RootLayoutNav = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+
   return (
-    <SQLiteProvider databaseName={DatabaseName}>
-      <PaperProvider
-        theme={
-          Themes[
-          settings.theme === 'auto' ? (colorScheme ?? 'dark') : settings.theme
-          ][settings.color]
-        }
-      >
-        <Stack
-          screenOptions={{
-            animation: 'ios',
-            header: (props: any) => (
-              <StackHeader navProps={props} children={undefined} />
-            ),
-          }}
-        >
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </PaperProvider>
-    </SQLiteProvider>
+    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
+      <ClerkLoaded>
+        <SQLiteProvider databaseName={DatabaseName}>
+          <PaperProvider
+            theme={
+              Themes[
+              settings.theme === 'auto' ? (colorScheme ?? 'dark') : settings.theme
+              ][settings.color]
+            }
+          >
+            <Stack
+              screenOptions={{
+                animation: 'ios',
+                headerShown: false,
+                header: (props) => <StackHeader navProps={props} children={undefined} />
+              }}
+            >
+              <Stack.Screen name="(tabs)"/>
+            </Stack>
+          </PaperProvider>
+        </SQLiteProvider>
+      </ClerkLoaded>
+    </ClerkProvider>
   )
 }
 
